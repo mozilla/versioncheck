@@ -3,5 +3,5 @@
 .vagrant
 pip-log.txt
 .DS_Store
-docs/_build
+docs/_build/*
 versioncheck/settings_local.py
