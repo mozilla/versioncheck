@@ -1,0 +1,7 @@
+*.py[co]
+.coverage
+.vagrant
+pip-log.txt
+.DS_Store
+docs/_build
+versioncheck/settings_local.py
