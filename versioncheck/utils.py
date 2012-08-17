@@ -10,6 +10,8 @@ import settings_local as settings
 from constants import STATUS_BETA, STATUS_DISABLED, STATUS_PUBLIC
 
 
+test_prefix = 'test_version_check_'
+
 version_re = re.compile(r"""(?P<major>\d+)         # major (x in x.y)
                             \.(?P<minor1>\d+)      # minor1 (y in x.y)
                             \.?(?P<minor2>\d+|\*)? # minor2 (z in x.y.z)

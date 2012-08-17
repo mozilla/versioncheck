@@ -11,7 +11,9 @@ ADDON_PREMIUMS = (1, 2)
 ADDON_SLUGS_UPDATE = {1: 'extension', 2: 'theme', 3: 'extension', 4: 'search',
                       5: 'item', 6: 'extension', 7: 'plugin', 9: 'persona',
                       11: 'app'}
-D2C_MAC_VERSIONS = {1: '4.0', 18: '5.0', 59: '2.1', 60: '11.0'}
+D2C_MAX_VERSIONS = {1: '4.0', 18: '5.0', 59: '2.1', 60: '11.0'}
+
+PLATFORM_LINUX = 2
 PLATFORMS = {u'ALL_mobile': 9, u'WINNT': 5, u'ALL': 1, 'SunOS': 6, u'Maemo': 8,
              u'Linux': 2, u'BSD_OS': 4, u'Darwin': 3, u'Android': 7}
 

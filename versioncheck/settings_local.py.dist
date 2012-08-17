@@ -1,12 +1,13 @@
-SERVICES_DATABASE = {
-    'NAME': 'zamboni',
-    'USER': '',
-    'PASSWORD': '',
-    'HOST': '',
-}
+from settings import *
 
-MIRROR_DELAY = 30
-MIRROR_URL = 'http://releases.mozilla.org/pub/mozilla.org/addons'
-LOCAL_MIRROR_URL = 'https://static.addons.mozilla.net/_files'
-PRIVATE_MIRROR_URL = '/_privatefiles'
-SITE_URL = 'https://addons.mozilla.org'
+# The settings for the zamboni database. This could be a read only slave.
+# SERVICES_DATABASE = {
+#    'NAME': 'zamboni',
+#    'USER': '',
+#    'PASSWORD': '',
+#    'HOST': '',
+#}
+
+# The URL that update check will return for docs. See the other URL variables
+# for other things that script might return.
+SITE_URL = ''

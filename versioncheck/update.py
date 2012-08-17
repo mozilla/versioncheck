@@ -1,14 +1,11 @@
 from email.Utils import formatdate
 from time import time
+from urllib import urlencode
 from urlparse import parse_qsl
 
 
-#try:
-#    from compare import version_int
-#except ImportError:
-#    from apps.versions.compare import version_int
-
-from constants import *
+from compare import version_int
+import constants as co
 from utils import get_mirror, log, mypool
 import settings_local as settings
 
@@ -83,7 +80,7 @@ class Update(object):
             if field not in data:
                 return False
 
-        data['app_id'] = APP_GUIDS.get(data['appID'])
+        data['app_id'] = co.APP_GUIDS.get(data['appID'])
         if not data['app_id']:
             return False
 
@@ -93,7 +90,7 @@ class Update(object):
                        status != %(STATUS_DELETED)s
                  LIMIT 1;"""
         self.cursor.execute(sql, {'guid': self.data['id'],
-                                  'STATUS_DELETED': STATUS_DELETED})
+                                  'STATUS_DELETED': co.STATUS_DELETED})
         result = self.cursor.fetchone()
         if result is None:
             return False
@@ -102,21 +99,21 @@ class Update(object):
         data['version_int'] = version_int(data['appVersion'])
 
         if 'appOS' in data:
-            for k, v in PLATFORMS.items():
+            for k, v in co.PLATFORMS.items():
                 if k in data['appOS']:
                     data['appOS'] = v
                     break
             else:
                 data['appOS'] = None
 
-        self.is_beta_version = VERSION_BETA.search(data['version'])
+        self.is_beta_version = co.VERSION_BETA.search(data['version'])
         return True
 
     def get_beta(self):
         data = self.data
-        data['status'] = STATUS_PUBLIC
+        data['status'] = co.STATUS_PUBLIC
 
-        if data['addon_status'] == STATUS_PUBLIC:
+        if data['addon_status'] == co.STATUS_PUBLIC:
             # Beta channel looks at the addon name to see if it's beta.
             if self.is_beta_version:
                 # For beta look at the status of the existing files.
@@ -133,18 +130,18 @@ class Update(object):
                     status = result[1]
                     # If it's in Beta or Public, then we should be looking
                     # for similar. If not, find something public.
-                    if status in (STATUS_BETA, STATUS_PUBLIC):
+                    if status in (co.STATUS_BETA, co.STATUS_PUBLIC):
                         data['status'] = status
                     else:
-                        data.update(STATUSES_PUBLIC)
+                        data.update(co.STATUSES_PUBLIC)
                         self.flags['multiple_status'] = True
 
-        elif data['addon_status'] in (STATUS_LITE,
-                                      STATUS_LITE_AND_NOMINATED):
-            data['status'] = STATUS_LITE
+        elif data['addon_status'] in (co.STATUS_LITE,
+                                      co.STATUS_LITE_AND_NOMINATED):
+            data['status'] = co.STATUS_LITE
         else:
             # Otherwise then we'll keep the update within the current version.
-            data['status'] = STATUS_NULL
+            data['status'] = co.STATUS_NULL
             self.flags['use_version'] = True
 
     def get_update(self):
@@ -208,7 +205,7 @@ class Update(object):
             """)
             # Filter out versions that don't have the minimum maxVersion
             # requirement to qualify for default-to-compatible.
-            d2c_max = applications.D2C_MAX_VERSIONS.get(data['app_id'])
+            d2c_max = co.D2C_MAX_VERSIONS.get(data['app_id'])
             if d2c_max:
                 data['d2c_max_version'] = version_int(d2c_max)
                 sql.append("AND appmax.version_int >= %(d2c_max_version)s ")
@@ -240,10 +237,10 @@ class Update(object):
                 'datestatuschanged', 'strict_compat', 'releasenotes',
                 'version', 'premium_type'],
                 list(result)))
-            row['type'] = ADDON_SLUGS_UPDATE[row['type']]
-            if row['premium_type'] in ADDON_PREMIUMS:
+            row['type'] = co.ADDON_SLUGS_UPDATE[row['type']]
+            if row['premium_type'] in co.ADDON_PREMIUMS:
                 qs = urlencode(dict((k, data.get(k, ''))
-                               for k in WATERMARK_KEYS))
+                               for k in co.WATERMARK_KEYS))
                 row['url'] = (u'%s/downloads/watermarked/%s?%s' %
                               (settings.SITE_URL, row['file_id'], qs))
             else:
@@ -271,7 +268,7 @@ class Update(object):
         return rdf
 
     def get_no_updates_rdf(self):
-        name = base.ADDON_SLUGS_UPDATE[self.data['type']]
+        name = co.ADDON_SLUGS_UPDATE[self.data['type']]
         return no_updates_rdf % ({'guid': self.data['guid'], 'type': name})
 
     def get_good_rdf(self):
