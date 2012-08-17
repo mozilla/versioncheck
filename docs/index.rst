@@ -38,10 +38,16 @@ friendly zamboni install run the following::
 
         python manage.py test apps/addons/tests/test_update.py
 
+Until we flip to using this as the main version check source, to get these
+tests to work you'll need the `versioncheck branch`_.
+
+
 Indices and tables
 ==================
 
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+.. _`versioncheck branch`: https://github.com/andymckay/zamboni/tree/versioncheck
 
