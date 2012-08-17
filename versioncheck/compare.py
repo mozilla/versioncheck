@@ -1,7 +1,5 @@
 import re
 
-from django.utils.encoding import smart_str
-
 MAXVERSION = 2 ** 63 - 1
 
 version_re = re.compile(r"""(?P<major>\d+|\*)      # major (x in x.y)
@@ -60,7 +58,7 @@ def version_dict(version):
 
 
 def version_int(version):
-    d = version_dict(smart_str(version))
+    d = version_dict(unicode(version).encode('ascii', errors='ignore'))
     for key in ['alpha_ver', 'major', 'minor1', 'minor2', 'minor3',
                 'pre_ver']:
         if not d[key]:
